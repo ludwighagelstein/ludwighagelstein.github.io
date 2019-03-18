@@ -14,8 +14,9 @@ p {
     text-transform: uppercase;
   }
   
-  #article-title {font-family: cursive;
-  text-transform: capitalize;}
+  .cursive {font-family: cursive;}
+  
+  .capitalize {text-transform: capitalize;}
   
   .publish-time {color: gray;}
   
