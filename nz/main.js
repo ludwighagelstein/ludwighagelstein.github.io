@@ -27,4 +27,4 @@ let pin = L.marker(
 ).addTo(karte);
 
 // Popup zum Pin hängen
-pin.bindPopup(titel);
+pin.bindPopup(titel).openPopup(); //In die Klammern könnte man wieder ganz normal HTML Markup reinschreiben
