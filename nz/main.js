@@ -4,7 +4,7 @@
 const div = document.getElementById("map"); //Ich definiere die Konstante div und das div element ist drinnen
 const breite = div.getAttribute("data-lat");
 const laenge = div.getAttribute("data-lng");
-const title = div.getAttribute("data-title");
+const titel = div.getAttribute("data-title");
 
 //console.log("Breite=",lat,"Länge=",lng,"Titel=",title);
 
@@ -20,3 +20,11 @@ karte.setView(
 
 //OpenstreetMap einbauen
 L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(karte);
+
+//Positionsmarker einfügen
+let pin = L.marker(
+    [breite,laenge]
+).addTo(karte);
+
+// Popup zum Pin hängen
+pin.bindPopup(titel);
