@@ -5,6 +5,5 @@ const div = document.getElementById("map"); //Ich definiere die Konstante div un
 const lat = div.getAttribute("data-lat");
 const lng = div.getAttribute("data-lng");
 const title = div.getAttribute("data-title");
-alert(lat);
-alert(lng);
-alert(title);
+
+console.log("Breite=",lat,"Länge=",lng,"Titel=",title)
