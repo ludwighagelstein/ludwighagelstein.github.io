@@ -96,3 +96,8 @@ p.intro {
         width: auto;
     }
 } /* überschreiben des elements */ 
+
+a.textlinks {
+    color: black;
+    font-style: italic;
+}
