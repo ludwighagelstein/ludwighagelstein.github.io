@@ -53,17 +53,19 @@ main {
 }
 
 main figure {
-    margin-right: 0;
-    margin-left: 0;
+    margin: auto;
+    width: 50%;
+    float: right;
 }
 
 main figcaption {
     float: right;
-    margin-left: -12em;
+    margin: auto;
     width: 11.5em;
     color: grey;
     font-size: 0.75em;
 }
+
 
 #map {
     height: 360px;
@@ -87,11 +89,10 @@ p.intro {
     font-style: italic;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1035px) {
     main figure figcaption {
-        float: none;
-        margin-left: 0;
         width: auto;
+        float: left;
     }
 }
 
@@ -105,16 +106,11 @@ a.textlinks {
 p.Adlerblick {
     float: left;
     width: 50%;
-}
-
-figure.Gschoellkopf {
-    float: right;
-    width: 50%;
+    margin: auto;
 }
 
 main figure img {
-    width: 50%;
-    margin: 0 4em 0 4em;
+    margin: auto;
 }
 
 .figcaptionlinks {
