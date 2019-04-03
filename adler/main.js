@@ -57,9 +57,21 @@ const kartenLayer = {
             subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
             attribution: `Datenquelle: <a href="www.basemap.at">basemap.at</a>`
         }),
+        stamen_toner: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",{
+            subdomains: ['a','b','c'],
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+        }),
+        stamen_terrain: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",{
+            subdomains: ['a','b','c'],
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
+        }),
+        stamen_watercolor: L.tileLayer("http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",{
+            subdomains: ['a','b','c'],
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+        }),
     }
 
-kartenLayer.bmapgelaende.addTo(karte);
+kartenLayer.osm.addTo(karte);
 
 //Auswahlmenü hinzufügen
 L.control.layers({
@@ -70,8 +82,12 @@ L.control.layers({
     "Orthophoto" : kartenLayer.bmaporthofoto30cm,
     "Geoland Basemap hiDPI": kartenLayer.bmaphidpi,
     "Geoland Basemap Oberfläche": kartenLayer.bmapoberflaeche,
-    "Geoland Basemap Gelände": kartenLayer.bmapgelaende
+    "Geoland Basemap Gelände": kartenLayer.bmapgelaende,
+    "Stamen Toner": kartenLayer.stamen_toner,
+    "Stamen Terrain": kartenLayer.stamen_terrain,
+    "Stamen Watercolor": kartenLayer.stamen_watercolor
 }).addTo(karte);
+
 
 
 //Positionsmarker1 einfügen
@@ -105,3 +121,4 @@ for (let blick of ADLERBLICKE) { //let kann überschireben weren!
 
 console.log(blickeGruppe.getBounds());
 karte.fitBounds(blickeGruppe.getBounds()); // Setzt den map Extent genau auf die ausweitung von den Markern
+karte.addControl(new L.Control.Fullscreen());
