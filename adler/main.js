@@ -122,4 +122,15 @@ for (let blick of ADLERBLICKE) { //let kann überschireben weren!
 console.log(blickeGruppe.getBounds());
 karte.fitBounds(blickeGruppe.getBounds()); // Setzt den map Extent genau auf die ausweitung von den Markern
 karte.addControl(new L.Control.Fullscreen());
+
+//Koordinaten in Adresszeile einfügen
 var hash = new L.Hash(karte);
+
+//Koordinaten bei Maus hinzufügen
+var coords = new L.Control.Coordinates(); // you can send options to the constructor if you want to, otherwise default values are used
+
+coords.addTo(karte);
+
+karte.on('click', function(e) {
+	coords.setCoordinates(e);
+});
