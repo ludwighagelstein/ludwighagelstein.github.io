@@ -75,9 +75,9 @@ kartenLayer.osm.addTo(karte);
 
 //Auswahlmenü hinzufügen
 L.control.layers({
+    "OpenStreetMap" : kartenLayer.osm,
     "Geoland Basemap" : kartenLayer.geolandbasemap,
     "Geoland Basemap Grau" : kartenLayer.bmapgrau,
-    "OpenStreetMap" : kartenLayer.osm,
     "Geoland Basemap Overlay" : kartenLayer.bmapoverlay,
     "Orthophoto" : kartenLayer.bmaporthofoto30cm,
     "Geoland Basemap hiDPI": kartenLayer.bmaphidpi,
@@ -122,3 +122,4 @@ for (let blick of ADLERBLICKE) { //let kann überschireben weren!
 console.log(blickeGruppe.getBounds());
 karte.fitBounds(blickeGruppe.getBounds()); // Setzt den map Extent genau auf die ausweitung von den Markern
 karte.addControl(new L.Control.Fullscreen());
+var hash = new L.Hash(karte);
