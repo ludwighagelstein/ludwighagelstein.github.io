@@ -98,7 +98,7 @@ p.intro {
 
 /* überschreiben des elements */
 
-a.textlinks {
+.textlinks {
     color: black;
     font-style: italic;
 }
@@ -117,3 +117,7 @@ main figure img {
     color: grey;
     font-style: italic;
 }
+
+/*.adlermitbild {
+
+}*/
