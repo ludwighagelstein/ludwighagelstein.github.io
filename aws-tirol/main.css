@@ -7,3 +7,21 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+.leaflet-div-icon {
+    background: none;
+    border: none;
+}
+
+.temperatureLabel {
+    display: inline;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0.1em;
+    border: 1px solid grey;
+    text-shadow:
+    -1px -1px 0 white,
+    1px -1px 0 white,
+    -1px 1px 0 white,
+    1px 1px 0 white;
+}
