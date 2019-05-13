@@ -79,7 +79,7 @@ async function loadStations() {
         .bindPopup(function (layer) {
             //console.log("Layer: ", layer);
             const date = new Date(layer.feature.properties.date);
-            console.log("Datum: ", date);
+            //console.log("Datum: ", date);
             return `<h4> ${layer.feature.properties.name} </h4>
         Höhe: ${layer.feature.geometry.coordinates[2]} m<br>
         Temperatur: ${layer.feature.properties.LT} °C <br>
@@ -95,13 +95,38 @@ async function loadStations() {
 
 
     const windLayer = L.featureGroup();
+    const farbpalette_wind = [
+        [3, "#00b900"],
+        [4, "#10cd24"],
+        [5, "#72d475"],
+        [6, "#fed6d3"],
+        [7, "#ffb6b3"],
+        [8, "#ff9e9a"],
+        [9, "#ff8281"],
+        [10, "#ff6160"],
+        [11, "#ff453c"],
+        [12, "#ff200e"]
+    ];
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             if (feature.properties.WR) {
-                let color = `color`;
-                if (feature.properties.WG > 20) {
-                    color = `red`
+                //let color = `color`;
+                //const windspeed_bf = ((((feature.properties.WG/3.6)-0.07)/0.834)^2)^(1/3); //umrechung in beaufort
+                //if (windspeed_bf > 4) {
+                //    color = `red`
+                //}
+
+                for (let i = 0; i < farbpalette_wind.length; i++) {
+                    let windspeed_bf = ((((feature.properties.WG / 3.6) - 0.07) / 0.834) ^ 2) ^ (1 / 3); //umrechung in beaufort
+                    console.log('Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
+                    if (windspeed_bf < farbpalette_wind[i][0]) {
+                        color = farbpalette_wind[i][1];
+                        break;
+                    }
                 }
+
+
+                //console.log('Windspeed (Beafort):', windspeed_bf);
                 return L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<i style="color: ${color}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-location-arrow fa-2x"></i>`
@@ -113,10 +138,13 @@ async function loadStations() {
         }
     }).addTo(windLayer);
     layerControl.addOverlay(windLayer, "Windrichtung");
+
     //windLayer.addTo(karte);
 
+
+
     const temperatureLayer = L.featureGroup();
-    const farbpalette = [
+    const farbpalette_temp = [
         [-30, "#646664"],
         [-28, "#8c8a8c"],
         [-26, "#b4b2b4"],
@@ -162,10 +190,10 @@ async function loadStations() {
         pointToLayer: function (feature, latlng) {
             let color;
             if (feature.properties.LT) {
-                for (let i = 0; i < farbpalette.length; i++) {
-                    console.log(farbpalette[i], feature.properties.LT);
-                    if (feature.properties.LT < farbpalette[i][0]) {
-                        color = farbpalette[i][1];
+                for (let i = 0; i < farbpalette_temp.length; i++) {
+                    //console.log(farbpalette_temp[i], feature.properties.LT);
+                    if (feature.properties.LT < farbpalette_temp[i][0]) {
+                        color = farbpalette_temp[i][1];
                         break;
                     }
                 }
