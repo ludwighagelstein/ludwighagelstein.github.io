@@ -117,7 +117,7 @@ async function loadStations() {
                 //}
 
                 for (let i = 0; i < farbpalette_wind.length; i++) {
-                    let windspeed_bf = ((((feature.properties.WG / 3.6) - 0.07) / 0.834) ^ 2) ^ (1 / 3); //umrechung in beaufort
+                    const windspeed_bf = Math.ceil(((((feature.properties.WG / 3.6) - 0.07) / 0.834) ^ 2) ^ (1 / 3)); //umrechung in beaufort
                     console.log('Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
                     if (windspeed_bf < farbpalette_wind[i][0]) {
                         color = farbpalette_wind[i][1];
