@@ -117,8 +117,8 @@ async function loadStations() {
                 //}
 
                 for (let i = 0; i < farbpalette_wind.length; i++) {
-                    const windspeed_bf = Math.ceil(((((feature.properties.WG / 3.6) - 0.07) / 0.834) ^ 2) ^ (1 / 3)); //umrechung in beaufort
-                    console.log('Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
+                    const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3))); //umrechung in beaufort
+                    //console.log('station=',feature.properties.name,'Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
                     if (windspeed_bf < farbpalette_wind[i][0]) {
                         color = farbpalette_wind[i][1];
                         break;
@@ -213,6 +213,49 @@ async function loadStations() {
         }
     }).addTo(temperatureLayer);
     layerControl.addOverlay(temperatureLayer, "Temperatur");
+
+    const humidLayer = L.featureGroup();
+    const farbpalette_h = [
+        [30,"#EEE"],
+        [40,"#DDD"],
+        [50,"#C6C9CE"],
+        [60,"#BBB"],
+        [70,"#AAC"],
+        [80,"#9998DD"],
+        [90,"#8788EE"],
+        [100,"#7677E1"]
+    ];
+
+    L.geoJson(stations, {
+        pointToLayer: function (feature, latlng) {
+            let color;
+            if (feature.properties.RH) {
+                for (let i = 0; i < farbpalette_h.length; i++) {
+                    console.log(farbpalette_h[i], feature.properties.RH);
+                    if (feature.properties.RH < farbpalette_h[i][0]) {
+                        color = farbpalette_h[i][1];
+                        break;
+                    }
+                }
+
+
+                // if (feature.properties.LT > 0) {
+                //    color = `red`;
+                //}
+                return L.marker(latlng, {
+                    icon: L.divIcon({
+                        html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.RH} </div>`
+                    })
+
+                });
+
+            }
+        }
+    }).addTo(humidLayer);
+    layerControl.addOverlay(humidLayer, "Relative Luftfeuchte");
+
+
+
     temperatureLayer.addTo(karte);
 }
 
