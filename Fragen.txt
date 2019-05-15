@@ -1,0 +1,6 @@
+AWS Tirol:
+Woher nimmt er die Koordinaten der Marker (latlng) --> Ist in der Leaflet Funktion so festgelegt! Könnte man nennen wie man will.
+
+
+
+Wien:
