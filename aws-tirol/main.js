@@ -106,18 +106,12 @@ async function loadStations() {
         [9, "#ff8281"],
         [10, "#ff6160"],
         [11, "#ff453c"],
-        [12, "#ff200e"]
+        [99, "#ff200e"]
     ];
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
             let colorwind;
             if (feature.properties.WR) {
-                //let color = `color`;
-                //const windspeed_bf = ((((feature.properties.WG/3.6)-0.07)/0.834)^2)^(1/3); //umrechung in beaufort
-                //if (windspeed_bf > 4) {
-                //    color = `red`
-                //}
-
                 for (let i = 0; i < farbpalette_wind.length; i++) {
                     const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3))); //umrechung in beaufort
                     //console.log('station=',feature.properties.name,'Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
