@@ -82,10 +82,11 @@ async function loadStations() {
             //console.log("Datum: ", date);
             return `<h4> ${layer.feature.properties.name} </h4>
         Höhe: ${layer.feature.geometry.coordinates[2]} m<br>
-        Temperatur: ${layer.feature.properties.LT} °C <br>
+        Temperatur (°C): ${layer.feature.properties.LT} °C <br>
         Datum: ${date.toLocaleDateString("de-AT")} <br> 
         Zeit: ${date.toLocaleTimeString("de-AT")} <br>
-        Windgeschwindigkeit: ${layer.feature.properties.WG ? layer.feature.properties.WG + ' km/h': 'keine Daten'}
+        Windgeschwindigkeit (Bft): ${layer.feature.properties.WG ? layer.feature.properties.WG + ' km/h': 'keine Daten'} <br>
+        Relative Luftfeuchtigkeit (%): ${layer.feature.properties.RH ? layer.feature.properties.RH + '%': 'keine Daten'}
         <hr>
         <footer>Land Tirol - <a href=https://data.tiro.gv.at>data.tirol.at</a></footer>`;
         })
@@ -109,6 +110,7 @@ async function loadStations() {
     ];
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
+            let colorwind;
             if (feature.properties.WR) {
                 //let color = `color`;
                 //const windspeed_bf = ((((feature.properties.WG/3.6)-0.07)/0.834)^2)^(1/3); //umrechung in beaufort
@@ -120,7 +122,7 @@ async function loadStations() {
                     const windspeed_bf = Math.round(Math.pow(((feature.properties.WG / 3.6) / 0.836), (2 / 3))); //umrechung in beaufort
                     //console.log('station=',feature.properties.name,'Farbwert = ', farbpalette_wind[i], 'Beaufort = ', windspeed_bf, 'Km/h = ', feature.properties.WG);
                     if (windspeed_bf < farbpalette_wind[i][0]) {
-                        color = farbpalette_wind[i][1];
+                        colorwind = farbpalette_wind[i][1];
                         break;
                     }
                 }
@@ -129,7 +131,7 @@ async function loadStations() {
                 //console.log('Windspeed (Beafort):', windspeed_bf);
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<i style="color: ${color}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-location-arrow fa-2x"></i>`
+                        html: `<i style="color: ${colorwind}; transform: rotate(${feature.properties.WR-45}deg)" class="fas fa-location-arrow fa-2x"></i>`
                     })
 
                 });
@@ -188,12 +190,12 @@ async function loadStations() {
 
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
-            let color;
+            let colortemp;
             if (feature.properties.LT) {
                 for (let i = 0; i < farbpalette_temp.length; i++) {
                     //console.log(farbpalette_temp[i], feature.properties.LT);
                     if (feature.properties.LT < farbpalette_temp[i][0]) {
-                        color = farbpalette_temp[i][1];
+                        colortemp = farbpalette_temp[i][1];
                         break;
                     }
                 }
@@ -204,7 +206,7 @@ async function loadStations() {
                 //}
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.LT} </div>`
+                        html: `<div class="temperatureLabel" style="background-color:${colortemp}"> ${feature.properties.LT} </div>`
                     })
 
                 });
@@ -212,39 +214,38 @@ async function loadStations() {
             }
         }
     }).addTo(temperatureLayer);
-    layerControl.addOverlay(temperatureLayer, "Temperatur");
+    layerControl.addOverlay(temperatureLayer, "Temperatur (°C)");
 
     const humidLayer = L.featureGroup();
     const farbpalette_h = [
-        [30,"#EEE"],
-        [40,"#DDD"],
-        [50,"#C6C9CE"],
-        [60,"#BBB"],
-        [70,"#AAC"],
-        [80,"#9998DD"],
-        [90,"#8788EE"],
-        [100,"#7677E1"]
+        [1, "#EEE"],
+        [30, "#DDD"],
+        [40, "#C6C9CE"],
+        [50, "#BBB"],
+        [60, "#AAC"],
+        [70, "#9998DD"],
+        [80, "#8788EE"],
+        [90, "#7677E1"],
+        [9999, "#7677E1"]
     ];
 
     L.geoJson(stations, {
         pointToLayer: function (feature, latlng) {
-            let color;
+            let colorh;
             if (feature.properties.RH) {
                 for (let i = 0; i < farbpalette_h.length; i++) {
-                    console.log(farbpalette_h[i], feature.properties.RH);
+
                     if (feature.properties.RH < farbpalette_h[i][0]) {
-                        color = farbpalette_h[i][1];
+                        colorh = farbpalette_h[i][1];
+                        //console.log('station=', feature.properties.name, 'Farbwert = ', colorh, 'Luftfeuchte = ', feature.properties.RH);
                         break;
                     }
+
                 }
 
-
-                // if (feature.properties.LT > 0) {
-                //    color = `red`;
-                //}
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<div class="temperatureLabel" style="background-color:${color}"> ${feature.properties.RH} </div>`
+                        html: `<div class="temperatureLabel" style="background-color:${colorh}"> ${feature.properties.RH} </div>`
                     })
 
                 });
@@ -252,7 +253,7 @@ async function loadStations() {
             }
         }
     }).addTo(humidLayer);
-    layerControl.addOverlay(humidLayer, "Relative Luftfeuchte");
+    layerControl.addOverlay(humidLayer, "Relative Luftfeuchte (%)");
 
 
 
