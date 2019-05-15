@@ -245,7 +245,7 @@ async function loadStations() {
 
                 return L.marker(latlng, {
                     icon: L.divIcon({
-                        html: `<div class="temperatureLabel" style="background-color:${colorh}"> ${feature.properties.RH} </div>`
+                        html: `<div class="humidLabel" style="background-color:${colorh}"> ${feature.properties.RH} </div>`
                     })
 
                 });
