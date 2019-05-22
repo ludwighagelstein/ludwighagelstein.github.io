@@ -73,6 +73,12 @@ main figcaption {
     border: 1px solid black;
 }
 
+#elevation-div {
+    height: 200px;
+    width: 90%;
+    /*border: 1px solid black;*/
+}
+
 .back {
     float: left;
 }
