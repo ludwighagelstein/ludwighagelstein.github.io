@@ -67,6 +67,63 @@ kartenLayer.bmapgrau.addTo(karte);
 
 karte.addControl(new L.Control.Fullscreen());
 
+//Wikipedia Artikel laden:    
+//http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=44.1&south=-9.9&east=-22.4&west=55.2&username=webmapping&style=full
+
+const WikipediaGruppe = L.featureGroup().addTo(karte);
+layerControl.addOverlay(WikipediaGruppe, "Wikipedia Artikel");
+
+async function wikipediaArtikelLaden(url) {
+    WikipediaGruppe.clearLayers();
+    console.log("Lade", url);
+
+    const response = await fetch(url);
+    const jsonDaten = await response.json();
+    console.log(jsonDaten)
+    for (let artikel of jsonDaten.geonames) {
+        const WikipediaMarker = L.marker([artikel.lat, artikel.lng], {
+            icon: L.icon({
+                iconUrl: "https://upload.wikimedia.org/wikipedia/commons/1/10/Wikipedia-W-bold-in-square.svg",
+                iconSize: [30, 30]
+            })
+
+        }).addTo(WikipediaGruppe);
+
+        WikipediaMarker.bindPopup(`
+        <h3>${artikel.title}</h3>
+        <p>${artikel.summary}</p>
+        <img src="${artikel.thumbnailImg}" alt="${artikel.thumbnailImg}">
+        <hr>
+        <footer><a href="https://${artikel.wikipediaUrl}" target="_blank">weitere Informationen</a></footer>
+    `);
+
+    }
+}
+
+
+//Sicherstellen, dass Karte nur 1x geladen wird:
+let letzteGeonamesUrl = null;
+
+karte.on("load zoomend moveend", function () { //Macht er jedesmal wenn ich lade, zoome, oder bewege (Immer max 50 artikel!)
+    //console.log("Karte geladen", karte.getBounds());
+
+    let ausschnitt = {
+        n: karte.getBounds().getNorth(),
+        s: karte.getBounds().getSouth(),
+        o: karte.getBounds().getEast(),
+        w: karte.getBounds().getWest(),
+    }
+    //console.log(ausschnitt)
+    const geonamesUrl = `http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=${ausschnitt.n}&south=${ausschnitt.s}&east=${ausschnitt.o}&west=${ausschnitt.w}&username=webmapping&style=full&maxRows=50&lang=de`;
+    //console.log(geonamesUrl);
+    if (geonamesUrl != letzteGeonamesUrl) {
+        //JSON Artikel laden
+        wikipediaArtikelLaden(geonamesUrl);
+        letzteGeonamesUrl = geonamesUrl;
+    }
+
+});
+
 karte.setView([48.208333, 16.373056], 12);
 
 // https://github.com/Norkart/Leaflet-MiniMap
@@ -129,4 +186,3 @@ const massstab = L.control.scale({
     metric: true,
     maxWidth: 250
 }).addTo(karte);
-
