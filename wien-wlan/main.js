@@ -114,7 +114,7 @@ karte.on("load zoomend moveend", function () { //Macht er jedesmal wenn ich lade
         w: karte.getBounds().getWest(),
     }
     //console.log(ausschnitt)
-    const geonamesUrl = `http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=${ausschnitt.n}&south=${ausschnitt.s}&east=${ausschnitt.o}&west=${ausschnitt.w}&username=webmapping&style=full&maxRows=50&lang=de`;
+    const geonamesUrl = `http://api.geonames.org/wikipediaBoundingBoxJSON?formatted=true&north=${ausschnitt.n}&south=${ausschnitt.s}&east=${ausschnitt.o}&west=${ausschnitt.w}&username=ludwighagelstein&style=full&maxRows=50&lang=de`;
     //console.log(geonamesUrl);
     if (geonamesUrl != letzteGeonamesUrl) {
         //JSON Artikel laden
