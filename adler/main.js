@@ -145,11 +145,19 @@ new L.GPX('AdlerwegEtappe07.gpx', {
     }
 }).on('loaded', function (e) {
     karte.fitBounds(e.target.getBounds());
-}).on('addline', function(e){
+
+    const minSpan = document.getElementById('min');
+    const maxSpan = document.getElementById('max');
+    const diffSpan = document.getElementById('diff');
+    minSpan.innerHTML = e.target.get_elevation_min();
+    maxSpan.innerHTML = e.target.get_elevation_max();
+    diffSpan.innerHTML = Math.round(e.target.get_elevation_gain());
+
+}).on('addline', function (e) {
     console.log('linie geladen');
     const controlElevation = L.control.elevation({
-            detachedView: true,
-            elevationDiv: '#elevation-div'
+        detachedView: true,
+        elevationDiv: '#elevation-div'
     });
     controlElevation.addTo(karte);
     controlElevation.addData(e.line);
@@ -157,15 +165,15 @@ new L.GPX('AdlerwegEtappe07.gpx', {
     console.log(gpxLinie);
     for (let i = 1; i < gpxLinie.length; i += 1) {
         //console.log(gpxLinie[i-1]);
-        let p1 = gpxLinie[i-1];
+        let p1 = gpxLinie[i - 1];
         let p2 = gpxLinie[i];
         let dist = karte.distance(
-            [ p1.lat,p1.lng ],
-            [ p2.lat,p2.lng ]
+            [p1.lat, p1.lng],
+            [p2.lat, p2.lng]
         );
 
-        let delta =(p2.meta.ele - p1.meta.ele);
-        let proz = (dist != 0 ? delta/dist*100.0 : 0).toFixed(1);
+        let delta = (p2.meta.ele - p1.meta.ele);
+        let proz = (dist != 0 ? delta / dist * 100.0 : 0).toFixed(1);
         console.log('Distanz', dist, 'Höhendiff: ', delta, 'Steigung: ', proz);
         let farbe =
             proz >= 10 ? '#d73027' :
@@ -176,14 +184,14 @@ new L.GPX('AdlerwegEtappe07.gpx', {
             proz >= -10 ? '#91cf60' :
             '#1a9850';
 
-            L.polyline(
-                [
-                    [ p1.lat,p1.lng ],
-                    [ p2.lat,p2.lng ],
-                ], {
-                    color: farbe,
-                }
-            ).addTo(karte);
+        L.polyline(
+            [
+                [p1.lat, p1.lng],
+                [p2.lat, p2.lng],
+            ], {
+                color: farbe,
+            }
+        ).addTo(karte);
 
     }
 
